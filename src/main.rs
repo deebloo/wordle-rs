@@ -1,3 +1,10 @@
+mod game;
+mod words;
+
 fn main() {
-    println!("Hello, world!");
+    let game = game::Game::new("hello");
+
+    let res = game.guess("hello");
+
+    println!("{:?}", res);
 }
