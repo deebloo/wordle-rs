@@ -168,4 +168,25 @@ mod tests {
             ]
         );
     }
+
+    #[test]
+    fn should_return_loss() {
+        let mut game = Game::new("hello");
+
+        assert_eq!(game.guess("hille"), GameResult::Incomplete);
+        assert_eq!(game.guess("hille"), GameResult::Incomplete);
+        assert_eq!(game.guess("hille"), GameResult::Incomplete);
+        assert_eq!(game.guess("hille"), GameResult::Incomplete);
+        assert_eq!(game.guess("hille"), GameResult::Incomplete);
+        assert_eq!(game.guess("hille"), GameResult::Loose);
+    }
+
+    #[test]
+    fn should_return_win() {
+        let mut game = Game::new("hello");
+
+        assert_eq!(game.guess("hille"), GameResult::Incomplete);
+        assert_eq!(game.guess("hille"), GameResult::Incomplete);
+        assert_eq!(game.guess("hello"), GameResult::Win);
+    }
 }
