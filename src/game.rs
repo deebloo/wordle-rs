@@ -103,19 +103,23 @@ impl Game {
         ];
 
         for (i, char) in guess.trim().chars().enumerate() {
-            if &self.word[i] == &char {
-                res[i] = State::RightPos;
+            res[i] = if self.word[i] == char {
+                State::RightPos
             } else if self.word.contains(&char) {
-                res[i] = State::RightChar
+                State::RightChar
             } else {
-                res[i] = State::NA;
+                State::NA
             }
         }
 
         self.game_state[self.turn] = res;
         self.turn += 1;
 
-        if res.clone().iter().all(|state| state == &State::RightPos) {
+        self.determine_result(&res)
+    }
+
+    fn determine_result(&self, res: &GuessResult) -> GameResult {
+        if res.iter().all(|state| state == &State::RightPos) {
             return GameResult::Win;
         } else if self.turn > self.game_state.len() - 1 {
             return GameResult::Loose;
