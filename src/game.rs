@@ -1,28 +1,64 @@
-#[derive(Debug, PartialEq)]
+use std::fmt;
+
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum State {
     NA,
     RightChar,
     RightPos,
 }
 
+impl State {
+    pub fn to_str(&self) -> &str {
+        match self {
+            State::NA => "⬜",
+            State::RightChar => "🟨",
+            State::RightPos => "🟩",
+        }
+    }
+}
+
+impl std::fmt::Display for State {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.to_str())
+    }
+}
+
+#[derive(Debug, PartialEq, Clone, Copy)]
+pub enum GameResult {
+    Incomplete,
+    Win,
+    Loose,
+}
+
 type Word = Vec<char>;
 type GuessResult = [State; 5];
 
 pub struct Game {
-    word: Word,
+    pub word: Word,
+    pub game_state: Vec<GuessResult>,
+    pub turn: usize,
 }
 
 impl Game {
-    pub fn new(word: &'static str) -> Self {
+    pub fn new(word: &str) -> Self {
         Self {
-            word: word.chars().collect(),
+            word: word.trim().chars().collect(),
+            turn: 0,
+            game_state: vec![
+                [State::NA, State::NA, State::NA, State::NA, State::NA],
+                [State::NA, State::NA, State::NA, State::NA, State::NA],
+                [State::NA, State::NA, State::NA, State::NA, State::NA],
+                [State::NA, State::NA, State::NA, State::NA, State::NA],
+                [State::NA, State::NA, State::NA, State::NA, State::NA],
+                [State::NA, State::NA, State::NA, State::NA, State::NA],
+            ],
         }
     }
 
-    pub fn guess(&self, guess: &'static str) -> GuessResult {
+    pub fn guess(&mut self, guess: &str) -> GameResult {
         let mut res: GuessResult = [State::NA, State::NA, State::NA, State::NA, State::NA];
 
-        for (i, char) in guess.chars().enumerate() {
+        for (i, char) in guess.trim().chars().enumerate() {
             if self.word.contains(&char) {
                 res[i] = State::RightChar
             }
@@ -32,7 +68,32 @@ impl Game {
             }
         }
 
-        res
+        self.game_state[self.turn] = res;
+        self.turn += 1;
+
+        if res.clone().iter().all(|state| state == &State::RightPos) {
+            return GameResult::Win;
+        } else if self.turn > self.game_state.len() - 1 {
+            return GameResult::Loose;
+        }
+
+        GameResult::Incomplete
+    }
+}
+
+impl fmt::Display for Game {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut grid = String::new();
+
+        for state in &self.game_state {
+            for space in state {
+                grid += space.to_str();
+            }
+
+            grid += "\n";
+        }
+
+        write!(f, "{}", grid)
     }
 }
 
@@ -42,11 +103,11 @@ mod tests {
 
     #[test]
     fn should_return_correct_res_0() {
-        let game = Game::new("hello");
-        let res = game.guess("hello");
+        let mut game = Game::new("hello");
+        game.guess("hello");
 
         assert_eq!(
-            res,
+            game.game_state[0],
             [
                 State::RightPos,
                 State::RightPos,
@@ -59,11 +120,11 @@ mod tests {
 
     #[test]
     fn should_return_correct_res_1() {
-        let game = Game::new("hello");
-        let res = game.guess("lhoel");
+        let mut game = Game::new("hello");
+        game.guess("lhoel");
 
         assert_eq!(
-            res,
+            game.game_state[0],
             [
                 State::RightChar,
                 State::RightChar,
@@ -76,11 +137,11 @@ mod tests {
 
     #[test]
     fn should_return_correct_res_2() {
-        let game = Game::new("hello");
-        let res = game.guess("helps");
+        let mut game = Game::new("hello");
+        game.guess("helps");
 
         assert_eq!(
-            res,
+            game.game_state[0],
             [
                 State::RightPos,
                 State::RightPos,
@@ -93,11 +154,11 @@ mod tests {
 
     #[test]
     fn should_return_correct_res_3() {
-        let game = Game::new("hello");
-        let res = game.guess("hille");
+        let mut game = Game::new("hello");
+        game.guess("hille");
 
         assert_eq!(
-            res,
+            game.game_state[0],
             [
                 State::RightPos,
                 State::NA,
