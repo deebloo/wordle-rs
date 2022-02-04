@@ -1,16 +1,17 @@
 mod game;
 mod words;
 
-use game::GameResult;
+use game::{Game, GameResult};
 use rand::seq::SliceRandom;
 use std::io::{self, Write};
+use words::WORDS;
 
 fn main() {
-    let word = words::WORDS
+    let word = WORDS
         .choose(&mut rand::thread_rng())
         .expect("could not select word from word list");
 
-    let mut game = game::Game::new(word);
+    let mut game = Game::new(word);
     let mut res = GameResult::Incomplete;
 
     while res == GameResult::Incomplete {
