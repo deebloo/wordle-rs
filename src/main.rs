@@ -14,6 +14,8 @@ fn main() {
     let mut game = Game::new(word);
     let mut res = GameResult::Incomplete;
 
+    println!("{}", game);
+
     while res == GameResult::Incomplete {
         print!("Guess: ");
 
