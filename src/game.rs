@@ -103,10 +103,10 @@ impl Game {
         ];
 
         for (i, char) in guess.trim().chars().enumerate() {
-            if self.word.contains(&char) {
-                res[i] = State::RightChar
-            } else if &self.word[i] == &char {
+            if &self.word[i] == &char {
                 res[i] = State::RightPos;
+            } else if self.word.contains(&char) {
+                res[i] = State::RightChar
             } else {
                 res[i] = State::NA;
             }
