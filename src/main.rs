@@ -37,8 +37,10 @@ fn main() {
             let trimmed = guess.trim();
             let is_long_enough = trimmed.len() == 5;
 
-            let is_valid = if is_long_enough {
-                if words.len() > 0 {
+            valid_guess = if is_long_enough {
+                if WORDS.contains(&trimmed) {
+                    true
+                } else if words.len() > 0 {
                     words.contains(&trimmed)
                 } else {
                     true
@@ -47,9 +49,7 @@ fn main() {
                 false
             };
 
-            if is_valid {
-                valid_guess = true;
-
+            if valid_guess {
                 res = game.guess(guess.as_str());
 
                 println!("{}", game);

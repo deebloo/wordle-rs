@@ -2,6 +2,7 @@ use std::fmt;
 
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub enum State {
+    Blank,
     NA,
     RightChar,
     RightPos,
@@ -10,6 +11,7 @@ pub enum State {
 impl State {
     pub fn to_str(&self) -> &str {
         match self {
+            State::Blank => "⬛",
             State::NA => "⬜",
             State::RightChar => "🟨",
             State::RightPos => "🟩",
@@ -45,26 +47,68 @@ impl Game {
             word: word.trim().chars().collect(),
             turn: 0,
             game_state: vec![
-                [State::NA, State::NA, State::NA, State::NA, State::NA],
-                [State::NA, State::NA, State::NA, State::NA, State::NA],
-                [State::NA, State::NA, State::NA, State::NA, State::NA],
-                [State::NA, State::NA, State::NA, State::NA, State::NA],
-                [State::NA, State::NA, State::NA, State::NA, State::NA],
-                [State::NA, State::NA, State::NA, State::NA, State::NA],
+                [
+                    State::Blank,
+                    State::Blank,
+                    State::Blank,
+                    State::Blank,
+                    State::Blank,
+                ],
+                [
+                    State::Blank,
+                    State::Blank,
+                    State::Blank,
+                    State::Blank,
+                    State::Blank,
+                ],
+                [
+                    State::Blank,
+                    State::Blank,
+                    State::Blank,
+                    State::Blank,
+                    State::Blank,
+                ],
+                [
+                    State::Blank,
+                    State::Blank,
+                    State::Blank,
+                    State::Blank,
+                    State::Blank,
+                ],
+                [
+                    State::Blank,
+                    State::Blank,
+                    State::Blank,
+                    State::Blank,
+                    State::Blank,
+                ],
+                [
+                    State::Blank,
+                    State::Blank,
+                    State::Blank,
+                    State::Blank,
+                    State::Blank,
+                ],
             ],
         }
     }
 
     pub fn guess(&mut self, guess: &str) -> GameResult {
-        let mut res: GuessResult = [State::NA, State::NA, State::NA, State::NA, State::NA];
+        let mut res: GuessResult = [
+            State::Blank,
+            State::Blank,
+            State::Blank,
+            State::Blank,
+            State::Blank,
+        ];
 
         for (i, char) in guess.trim().chars().enumerate() {
             if self.word.contains(&char) {
                 res[i] = State::RightChar
-            }
-
-            if &self.word[i] == &char {
+            } else if &self.word[i] == &char {
                 res[i] = State::RightPos;
+            } else {
+                res[i] = State::NA;
             }
         }
 
