@@ -3,10 +3,14 @@ mod words;
 
 use game::{Game, GameResult};
 use rand::seq::SliceRandom;
+use std::fs::read_to_string;
 use std::io::{self, Write};
 use words::WORDS;
 
 fn main() {
+    let dict_file = read_to_string("/usr/share/dict/words").unwrap_or(String::new());
+    let words: Vec<&str> = dict_file.split("\n").collect();
+
     let word = WORDS
         .choose(&mut rand::thread_rng())
         .expect("could not select word from word list");
@@ -30,7 +34,20 @@ fn main() {
                 .read_line(&mut guess)
                 .expect("Could not read value");
 
-            if guess.trim().len() == 5 {
+            let trimmed = guess.trim();
+            let is_long_enough = trimmed.len() == 5;
+
+            let is_valid = if is_long_enough {
+                if words.len() > 0 {
+                    words.contains(&trimmed)
+                } else {
+                    true
+                }
+            } else {
+                false
+            };
+
+            if is_valid {
                 valid_guess = true;
 
                 res = game.guess(guess.as_str());
