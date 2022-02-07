@@ -57,9 +57,10 @@ fn main() {
 //     let words: String = word_file
 //         .split("\n")
 //         .filter_map(|f| {
+//             let letters_only = f.chars().all(|x| x.is_alphabetic());
 //             let val = f.to_lowercase().to_string();
 
-//             if val.len() == 5 {
+//             if letters_only && val.len() == 5 {
 //                 Some(val + "\n")
 //             } else {
 //                 None
