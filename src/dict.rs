@@ -42,3 +42,40 @@ fn words_from_file(path: &str) -> Vec<String> {
         .map(|f| f.to_string())
         .collect::<Vec<String>>()
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn should_read_words() {
+        let dict = Dict::new();
+
+        assert_eq!(dict.known_words.len() > 1, true);
+        assert_eq!(dict.word_pool.len() > 1, true);
+    }
+
+    #[test]
+    fn should_validate_word() {
+        let dict = Dict::new();
+
+        assert_eq!(dict.is_valid("adieu".to_string()), true);
+        assert_eq!(dict.is_valid("spoil".to_string()), true);
+    }
+
+    #[test]
+    fn should_validate_real_short_word() {
+        let dict = Dict::new();
+
+        assert_eq!(dict.is_valid("ask".to_string()), false);
+        assert_eq!(dict.is_valid("pass".to_string()), false);
+    }
+
+    #[test]
+    fn should_validate_unknown_word() {
+        let dict = Dict::new();
+
+        assert_eq!(dict.is_valid("asdfg".to_string()), false);
+        assert_eq!(dict.is_valid("poruf".to_string()), false);
+    }
+}
