@@ -8,19 +8,9 @@ pub struct Dict {
 
 impl Dict {
     pub fn new() -> Self {
-        let known_file = read_to_string("words_5ltr.txt").expect("could not load words file");
-        let pool_file = read_to_string("words_pool.txt").expect("could not load pool file");
-
         Self {
-            known_words: known_file
-                .split("\n")
-                .map(|f| f.to_string())
-                .collect::<Vec<String>>(),
-
-            word_pool: pool_file
-                .split("\n")
-                .map(|f| f.to_string())
-                .collect::<Vec<String>>(),
+            known_words: words_from_file("words_5ltr.txt"),
+            word_pool: words_from_file("words_pool.txt"),
         }
     }
 
@@ -43,4 +33,12 @@ impl Dict {
             false
         }
     }
+}
+
+fn words_from_file(path: &str) -> Vec<String> {
+    let file = read_to_string(path).expect(format!("could not load {}", path).as_str());
+
+    file.split("\n")
+        .map(|f| f.to_string())
+        .collect::<Vec<String>>()
 }
