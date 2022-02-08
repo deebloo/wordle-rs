@@ -1,5 +1,4 @@
 use rand::seq::SliceRandom;
-use std::fs::read_to_string;
 
 pub struct Dict {
     pub known_words: Vec<String>,
@@ -9,8 +8,8 @@ pub struct Dict {
 impl Dict {
     pub fn new() -> Self {
         Self {
-            known_words: words_from_file("words_5ltr.txt"),
-            word_pool: words_from_file("words_pool.txt"),
+            known_words: words_from_file(include_bytes!("../words_5ltr.txt")),
+            word_pool: words_from_file(include_bytes!("../words_pool.txt")),
         }
     }
 
@@ -35,8 +34,8 @@ impl Dict {
     }
 }
 
-fn words_from_file(path: &str) -> Vec<String> {
-    let file = read_to_string(path).expect(format!("could not load {}", path).as_str());
+fn words_from_file(bytes: &[u8]) -> Vec<String> {
+    let file = String::from_utf8_lossy(&bytes);
 
     file.split("\n")
         .map(|f| f.to_string())
