@@ -1,5 +1,5 @@
 [package]
-name = "wordle"
+name = "wordle-rs"
 description = "A wordle clone for your terminal (all credit to https://www.powerlanguage.co.uk/wordle/)"
 license = "MIT"
 version = "1.0.0"
