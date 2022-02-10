@@ -1,20 +1,10 @@
 [package]
-name = "wordle-rs"
+name = "word_generator"
 description = "A wordle clone for your terminal (all credit to https://www.powerlanguage.co.uk/wordle/)"
 license = "MIT"
 version = "1.0.0"
 edition = "2021"
-default-run = "wordle"
-
-[[bin]]
-name = "wordle"
-path = "src/main.rs"
-
-[[bin]]
-name = "word_generator"
-path = "word_generator/src/main.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rand = "0.8.4"

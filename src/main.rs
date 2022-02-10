@@ -3,11 +3,12 @@ mod game;
 
 use dict::Dict;
 use game::{Game, GameResult};
-use std::io::{self, Write};
+use std::io::{self, Stdout, Write};
 
 fn main() {
     let dict = Dict::new();
     let word = dict.select_word();
+    let mut stdout = io::stdout();
 
     let mut game = Game::new(word);
     let mut res = GameResult::Incomplete;
@@ -15,9 +16,7 @@ fn main() {
     println!("{}", game);
 
     while res == GameResult::Incomplete {
-        print!("Guess: ");
-
-        io::stdout().flush().expect("could not write to stdout");
+        prompt(&mut stdout, "Guess: ");
 
         let mut valid_guess = false;
 
@@ -35,9 +34,7 @@ fn main() {
 
                 println!("{}", game);
             } else {
-                print!("Invalid word try again: ");
-
-                io::stdout().flush().expect("could not write to stdout");
+                prompt(&mut stdout, "Invalid word try again: ")
             }
         }
     }
@@ -49,26 +46,8 @@ fn main() {
     }
 }
 
-// Generate word list
-// fn main() {
-//     use std::fs::{read_to_string, write};
+fn prompt(stdout: &mut Stdout, val: &str) {
+    print!("{}", val);
 
-//     let word_file = read_to_string("words_all.txt").unwrap();
-//     let words: String = word_file
-//         .split("\n")
-//         .filter_map(|f| {
-//             let letters_only = f.chars().all(|x| x.is_alphabetic());
-//             let val = f.to_lowercase().to_string();
-
-//             if letters_only && val.len() == 5 {
-//                 Some(val + "\n")
-//             } else {
-//                 None
-//             }
-//         })
-//         .collect::<String>()
-//         .trim()
-//         .to_string();
-
-//     write("words_5ltr.txt", words).unwrap();
-// }
+    stdout.flush().expect("could not write to stdout");
+}
