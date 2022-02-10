@@ -37,7 +37,7 @@ fn get_user_guess(stdin: &Stdin, stdout: &mut Stdout, dict: &Dict) -> String {
 
     stdin.read_line(&mut guess).expect("Could not read value");
 
-    let valid_guess = dict.is_valid(guess.trim().to_string());
+    let valid_guess = dict.is_valid(&guess);
 
     if valid_guess {
         guess

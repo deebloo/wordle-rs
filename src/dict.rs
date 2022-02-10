@@ -19,12 +19,14 @@ impl Dict {
             .expect("could not select word from word list")
     }
 
-    pub fn is_valid(&self, word: String) -> bool {
-        if word.len() == 5 {
-            if self.word_pool.contains(&word) {
+    pub fn is_valid(&self, word: &String) -> bool {
+        let trimmed = word.trim().to_string();
+
+        if trimmed.len() == 5 {
+            if self.word_pool.contains(&trimmed) {
                 true
             } else if self.known_words.len() > 0 {
-                self.known_words.contains(&word)
+                self.known_words.contains(&trimmed)
             } else {
                 true
             }
@@ -58,23 +60,31 @@ mod tests {
     fn should_validate_word() {
         let dict = Dict::new();
 
-        assert_eq!(dict.is_valid("adieu".to_string()), true);
-        assert_eq!(dict.is_valid("spoil".to_string()), true);
+        assert_eq!(dict.is_valid(&"adieu".to_string()), true);
+        assert_eq!(dict.is_valid(&"spoil".to_string()), true);
+    }
+
+    #[test]
+    fn should_validate_trimmed_word() {
+        let dict = Dict::new();
+
+        assert_eq!(dict.is_valid(&"adieu ".to_string()), true);
+        assert_eq!(dict.is_valid(&" spoil".to_string()), true);
     }
 
     #[test]
     fn should_validate_real_short_word() {
         let dict = Dict::new();
 
-        assert_eq!(dict.is_valid("ask".to_string()), false);
-        assert_eq!(dict.is_valid("pass".to_string()), false);
+        assert_eq!(dict.is_valid(&"ask".to_string()), false);
+        assert_eq!(dict.is_valid(&"pass".to_string()), false);
     }
 
     #[test]
     fn should_validate_unknown_word() {
         let dict = Dict::new();
 
-        assert_eq!(dict.is_valid("asdfg".to_string()), false);
-        assert_eq!(dict.is_valid("poruf".to_string()), false);
+        assert_eq!(dict.is_valid(&"asdfg".to_string()), false);
+        assert_eq!(dict.is_valid(&"poruf".to_string()), false);
     }
 }
