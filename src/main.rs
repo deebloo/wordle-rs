@@ -8,6 +8,7 @@ use std::io::{self, Stdout, Write};
 fn main() {
     let dict = Dict::new();
     let word = dict.select_word();
+    let stdin = io::stdin();
     let mut stdout = io::stdout();
 
     let mut game = Game::new(word);
@@ -23,9 +24,7 @@ fn main() {
         while !valid_guess {
             let mut guess = String::new();
 
-            std::io::stdin()
-                .read_line(&mut guess)
-                .expect("Could not read value");
+            stdin.read_line(&mut guess).expect("Could not read value");
 
             valid_guess = dict.is_valid(guess.trim().to_string());
 
