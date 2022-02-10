@@ -16,8 +16,6 @@ fn main() {
     let mut res = GameResult::Incomplete;
 
     while res == GameResult::Incomplete {
-        prompt(&mut stdout, "Guess: ");
-
         let guess = get_user_guess(&stdin, &mut stdout, &dict);
 
         res = game.guess(guess.as_str());
@@ -33,6 +31,8 @@ fn main() {
 }
 
 fn get_user_guess(stdin: &Stdin, stdout: &mut Stdout, dict: &Dict) -> String {
+    prompt(stdout, "Guess: ");
+
     let mut guess = String::new();
 
     stdin.read_line(&mut guess).expect("Could not read value");
