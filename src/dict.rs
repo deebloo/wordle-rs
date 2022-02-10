@@ -8,8 +8,8 @@ pub struct Dict {
 impl Dict {
     pub fn new() -> Self {
         Self {
-            known_words: words_from_file(include_bytes!("../words_5ltr.txt")),
-            word_pool: words_from_file(include_bytes!("../words_pool.txt")),
+            known_words: words_from_file(include_bytes!("../words/5ltr.txt")),
+            word_pool: words_from_file(include_bytes!("../words/pool.txt")),
         }
     }
 

@@ -1,7 +1,7 @@
 use std::fs::{read_to_string, write};
 
 fn main() {
-    let word_file = read_to_string("words_all.txt").unwrap();
+    let word_file = read_to_string("words/all.txt").unwrap();
     let words: String = word_file
         .split("\n")
         .filter_map(|f| {
@@ -18,5 +18,5 @@ fn main() {
         .trim()
         .to_string();
 
-    write("words_5ltr.txt", words).unwrap();
+    write("words/5ltr.txt", words).unwrap();
 }
