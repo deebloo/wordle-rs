@@ -1,7 +1,5 @@
 use std::io::{Stdin, Stdout, Write};
 
-use crate::Dict;
-
 pub struct WordleIo {
     stdout: Stdout,
     stdin: Stdin,
@@ -15,15 +13,18 @@ impl WordleIo {
         }
     }
 
-    pub fn get_user_guess(&mut self, dict: &Dict, msg: Option<&str>) -> String {
+    pub fn get_user_guess<F>(&mut self, is_valid: F, msg: Option<&str>) -> String
+    where
+        F: Fn(&String) -> bool,
+    {
         let guess = self.prompt(msg.unwrap_or("Guess: "));
 
-        let valid_guess = dict.is_valid(&guess);
+        let valid_guess = is_valid(&guess);
 
         if valid_guess {
             guess
         } else {
-            self.get_user_guess(dict, Some("Invalid word try again: "))
+            self.get_user_guess(is_valid, Some("Invalid word try again: "))
         }
     }
 

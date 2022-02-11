@@ -16,7 +16,7 @@ fn main() {
     let mut res = GameResult::Incomplete;
 
     while res == GameResult::Incomplete {
-        let guess = io.get_user_guess(&dict, None);
+        let guess = io.get_user_guess(|val| dict.is_valid(val), None);
 
         res = game.guess(guess.as_str());
 
