@@ -8,23 +8,6 @@ pub enum State {
     RightPos,
 }
 
-impl State {
-    pub fn to_str(&self) -> &str {
-        match self {
-            State::Blank => "⬛",
-            State::NA => "⬜",
-            State::RightChar => "🟨",
-            State::RightPos => "🟩",
-        }
-    }
-}
-
-impl std::fmt::Display for State {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.to_str())
-    }
-}
-
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub enum GameResult {
     Incomplete,
@@ -115,10 +98,6 @@ impl Game {
         self.game_state[self.turn] = res;
         self.turn += 1;
 
-        self.determine_result(&res)
-    }
-
-    fn determine_result(&self, res: &GuessResult) -> GameResult {
         if res.iter().all(|state| state == &State::RightPos) {
             return GameResult::Win;
         } else if self.turn > self.game_state.len() - 1 {
@@ -135,7 +114,12 @@ impl fmt::Display for Game {
 
         for state in &self.game_state {
             for space in state {
-                grid += space.to_str();
+                grid += match space {
+                    State::Blank => "⬛",
+                    State::NA => "⬜",
+                    State::RightChar => "🟨",
+                    State::RightPos => "🟩",
+                }
             }
 
             grid += "\n";
