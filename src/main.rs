@@ -3,12 +3,10 @@ mod game;
 
 use dict::Dict;
 use game::{Game, GameResult};
-use std::io::{self, Stdin, Stdout, Write};
+use std::io::{self, Write};
 
 fn main() {
     let dict = Dict::new();
-    let stdin = io::stdin();
-    let mut stdout = io::stdout();
     let mut game = Game::new(dict.select_word());
 
     println!("{}", game);
@@ -16,7 +14,7 @@ fn main() {
     let mut res = GameResult::Incomplete;
 
     while res == GameResult::Incomplete {
-        let guess = get_user_guess(&stdin, &mut stdout, &dict);
+        let guess = get_user_guess(&dict, None);
 
         res = game.guess(guess.as_str());
 
@@ -24,32 +22,34 @@ fn main() {
     }
 
     if res == GameResult::Loose {
-        println!("To bad! The word was: {:?}", &game.word);
+        println!("To bad! The word was: {:?}", String::from_iter(game.word));
     } else {
         println!("Well done!");
     }
 }
 
-fn get_user_guess(stdin: &Stdin, stdout: &mut Stdout, dict: &Dict) -> String {
-    prompt(stdout, "Guess: ");
-
-    let mut guess = String::new();
-
-    stdin.read_line(&mut guess).expect("Could not read value");
+fn get_user_guess(dict: &Dict, msg: Option<&str>) -> String {
+    let guess = prompt(msg.unwrap_or("Guess: "));
 
     let valid_guess = dict.is_valid(&guess);
 
     if valid_guess {
         guess
     } else {
-        prompt(stdout, "Invalid word try again: ");
-
-        get_user_guess(stdin, stdout, dict)
+        get_user_guess(dict, Some("Invalid word try again: "))
     }
 }
 
-fn prompt(stdout: &mut Stdout, val: &str) {
+fn prompt(val: &str) -> String {
     print!("{}", val);
 
-    stdout.flush().expect("could not write to stdout");
+    io::stdout().flush().expect("could not write to stdout");
+
+    let mut guess = String::new();
+
+    io::stdin()
+        .read_line(&mut guess)
+        .expect("Could not read value");
+
+    guess
 }
