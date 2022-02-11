@@ -19,9 +19,7 @@ impl WordleIo {
     {
         let guess = self.prompt(msg.unwrap_or("Guess: "));
 
-        let valid_guess = is_valid(&guess);
-
-        if valid_guess {
+        if is_valid(&guess) {
             guess
         } else {
             self.get_user_guess(is_valid, Some("Invalid word try again: "))
