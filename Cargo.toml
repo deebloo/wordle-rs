@@ -11,8 +11,8 @@ name = "wordle"
 path = "src/main.rs"
 
 [[bin]]
-name = "word_generator"
-path = "word_generator/src/main.rs"
+name = "words"
+path = "words/src/main.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

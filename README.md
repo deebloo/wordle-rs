@@ -20,5 +20,5 @@ cargo run
 ## Re-generate word lists
 
 ```bash
-cargo run --bin word_generator
+cargo run --bin words
 ```
