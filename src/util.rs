@@ -41,3 +41,11 @@ impl WordleIo {
         guess
     }
 }
+
+pub fn load_words_from_file(bytes: &[u8]) -> Vec<String> {
+    let file = String::from_utf8_lossy(&bytes);
+
+    file.split("\n")
+        .map(|f| f.to_string())
+        .collect::<Vec<String>>()
+}

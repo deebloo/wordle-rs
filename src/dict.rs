@@ -1,5 +1,7 @@
 use rand::seq::SliceRandom;
 
+use crate::util::load_words_from_file;
+
 pub struct Dict {
     pub known_words: Vec<String>,
     pub word_pool: Vec<String>,
@@ -8,8 +10,8 @@ pub struct Dict {
 impl Dict {
     pub fn new() -> Self {
         Self {
-            known_words: words_from_file(include_bytes!("../words/5ltr.txt")),
-            word_pool: words_from_file(include_bytes!("../words/pool.txt")),
+            known_words: load_words_from_file(include_bytes!("../words/5ltr.txt")),
+            word_pool: load_words_from_file(include_bytes!("../words/pool.txt")),
         }
     }
 
@@ -34,14 +36,6 @@ impl Dict {
             false
         }
     }
-}
-
-fn words_from_file(bytes: &[u8]) -> Vec<String> {
-    let file = String::from_utf8_lossy(&bytes);
-
-    file.split("\n")
-        .map(|f| f.to_string())
-        .collect::<Vec<String>>()
 }
 
 #[cfg(test)]

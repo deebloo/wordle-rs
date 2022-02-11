@@ -1,10 +1,10 @@
 mod dict;
 mod game;
-mod wordle_io;
+mod util;
 
 use dict::Dict;
 use game::{Game, GameResult};
-use wordle_io::WordleIo;
+use util::WordleIo;
 
 fn main() {
     let mut io = WordleIo::new();
