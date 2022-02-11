@@ -3,7 +3,7 @@ mod game;
 
 use dict::Dict;
 use game::{Game, GameResult};
-use std::io::{self, Write};
+use std::io::{stdin, stdout, Write};
 
 fn main() {
     let dict = Dict::new();
@@ -43,13 +43,11 @@ fn get_user_guess(dict: &Dict, msg: Option<&str>) -> String {
 fn prompt(val: &str) -> String {
     print!("{}", val);
 
-    io::stdout().flush().expect("could not write to stdout");
+    stdout().flush().expect("could not write to stdout");
 
     let mut guess = String::new();
 
-    io::stdin()
-        .read_line(&mut guess)
-        .expect("Could not read value");
+    stdin().read_line(&mut guess).expect("Could not read value");
 
     guess
 }
