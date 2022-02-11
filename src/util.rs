@@ -13,16 +13,16 @@ impl WordleIo {
         }
     }
 
-    pub fn get_user_guess<F>(&mut self, is_valid: F, msg: Option<&str>) -> String
+    pub fn get_user_guess<F>(&mut self, msg: &str, is_valid: F) -> String
     where
         F: Fn(&String) -> bool,
     {
-        let guess = self.prompt(msg.unwrap_or("Guess: "));
+        let guess = self.prompt(msg);
 
         if is_valid(&guess) {
             guess
         } else {
-            self.get_user_guess(is_valid, Some("Invalid word try again: "))
+            self.get_user_guess("Invalid word try again: ", is_valid)
         }
     }
 
