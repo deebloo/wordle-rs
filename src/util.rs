@@ -1,4 +1,4 @@
-use std::io::{Stdin, Stdout, Write};
+use std::io::{stdin, stdout, Stdin, Stdout, Write};
 
 pub struct WordleIo {
     stdout: Stdout,
@@ -8,8 +8,8 @@ pub struct WordleIo {
 impl WordleIo {
     pub fn new() -> Self {
         Self {
-            stdout: std::io::stdout(),
-            stdin: std::io::stdin(),
+            stdout: stdout(),
+            stdin: stdin(),
         }
     }
 
