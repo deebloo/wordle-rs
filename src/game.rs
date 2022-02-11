@@ -77,33 +77,6 @@ impl Game {
     }
 
     pub fn guess(&mut self, guess: &str) -> GameResult {
-        let mut res: GuessResult = [
-            State::Blank,
-            State::Blank,
-            State::Blank,
-            State::Blank,
-            State::Blank,
-        ];
-
-        for (i, char) in guess.trim().chars().enumerate() {
-            res[i] = if self.word[i] == char {
-                State::RightPos
-            } else if self.word.contains(&char) {
-                State::RightChar
-            } else {
-                State::NA
-            }
-        }
-
-        self.game_state[self.turn] = res;
-        self.turn += 1;
-
-        if res.iter().all(|state| state == &State::RightPos) {
-            return GameResult::Win;
-        } else if self.turn > self.game_state.len() - 1 {
-            return GameResult::Loose;
-        }
-
         GameResult::Incomplete
     }
 }

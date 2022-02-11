@@ -1,5 +1,3 @@
-use rand::seq::SliceRandom;
-
 use crate::util::load_words_from_file;
 
 pub struct Dict {
@@ -16,25 +14,11 @@ impl Dict {
     }
 
     pub fn select_word(&self) -> &str {
-        self.word_pool
-            .choose(&mut rand::thread_rng())
-            .expect("could not select word from word list")
+        "hello"
     }
 
     pub fn is_valid(&self, word: &String) -> bool {
-        let trimmed = word.trim().to_string();
-
-        if trimmed.len() == 5 {
-            if self.word_pool.contains(&trimmed) {
-                true
-            } else if self.known_words.len() > 0 {
-                self.known_words.contains(&trimmed)
-            } else {
-                true
-            }
-        } else {
-            false
-        }
+        false
     }
 }
 
