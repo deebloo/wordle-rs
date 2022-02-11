@@ -1,11 +1,13 @@
 mod dict;
 mod game;
+mod wordle_io;
 
 use dict::Dict;
 use game::{Game, GameResult};
-use std::io::{stdin, stdout, Write};
+use wordle_io::WordleIo;
 
 fn main() {
+    let mut io = WordleIo::new();
     let dict = Dict::new();
     let mut game = Game::new(dict.select_word());
 
@@ -14,7 +16,7 @@ fn main() {
     let mut res = GameResult::Incomplete;
 
     while res == GameResult::Incomplete {
-        let guess = get_user_guess(&dict, None);
+        let guess = io.get_user_guess(&dict, None);
 
         res = game.guess(guess.as_str());
 
@@ -26,28 +28,4 @@ fn main() {
     } else {
         println!("Well done!");
     }
-}
-
-fn get_user_guess(dict: &Dict, msg: Option<&str>) -> String {
-    let guess = prompt(msg.unwrap_or("Guess: "));
-
-    let valid_guess = dict.is_valid(&guess);
-
-    if valid_guess {
-        guess
-    } else {
-        get_user_guess(dict, Some("Invalid word try again: "))
-    }
-}
-
-fn prompt(val: &str) -> String {
-    print!("{}", val);
-
-    stdout().flush().expect("could not write to stdout");
-
-    let mut guess = String::new();
-
-    stdin().read_line(&mut guess).expect("Could not read value");
-
-    guess
 }
